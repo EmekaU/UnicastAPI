@@ -1,6 +1,6 @@
-package com.group.Service;
+package com.group.service;
 
-import com.group.Repository.UserRepo;
+import com.group.repository.UserRepo;
 import com.group.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

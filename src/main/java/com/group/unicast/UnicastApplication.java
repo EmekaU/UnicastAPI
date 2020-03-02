@@ -19,8 +19,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.group.*"})
-@PropertySource({"classpath:application.properties"})
 public class UnicastApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

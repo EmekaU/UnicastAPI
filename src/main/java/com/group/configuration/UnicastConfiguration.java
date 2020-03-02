@@ -1,16 +1,17 @@
-//package com.group.configuration;
-//
-//
-//import org.springframework.context.annotation.*;
-//import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-//import org.springframework.http.MediaType;
-//import org.springframework.web.servlet.config.annotation.*;
-//
-//@Configuration
-//@PropertySource({"classpath:application.properties"})
-////@EnableWebMvc
-//public class UnicastConfiguration extends WebMvcConfigurerAdapter {
-//
+package com.group.configuration;
+
+
+import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.http.MediaType;
+import org.springframework.web.servlet.config.annotation.*;
+
+@Configuration
+@ComponentScan(basePackages = "com.group")
+@PropertySource({"classpath:application.properties"})
+//@EnableWebMvc
+public class UnicastConfiguration{
+
 //    @Override
 //    public void configureContentNegotiation(ContentNegotiationConfigurer configurer){
 //        configurer.favorPathExtension(false).
@@ -25,4 +26,4 @@
 //    public static PropertySourcesPlaceholderConfigurer propertyConfigInDev(){
 //        return new PropertySourcesPlaceholderConfigurer();
 //    }
-//}
+}
