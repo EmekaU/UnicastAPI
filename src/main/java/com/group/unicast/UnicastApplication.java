@@ -19,7 +19,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.group"})
+@ComponentScan(basePackages = {"com.group.*"})
 @PropertySource({"classpath:application.properties"})
 public class UnicastApplication extends SpringBootServletInitializer {
 
@@ -39,39 +39,39 @@ public class UnicastApplication extends SpringBootServletInitializer {
 //    private static Logger log = LogManager.getLogger(UnicastApplication.class.getName());
 //    private final DataSource dataSource;
 
-
-@Component
-class CustomerLister implements ApplicationRunner {
-      private static Logger log = LogManager.getLogger(UnicastApplication.class.getName());
-//      private final DataSource dataSource;
-        private final JdbcTemplate jdbc;
-
-//    CustomerLister(DataSource dataSource) {
-//        this.dataSource = dataSource;
+//
+//@Component
+//class CustomerLister implements ApplicationRunner {
+//      private static Logger log = LogManager.getLogger(UnicastApplication.class.getName());
+////      private final DataSource dataSource;
+//        private final JdbcTemplate jdbc;
+//
+////    CustomerLister(DataSource dataSource) {
+////        this.dataSource = dataSource;
+////    }
+//
+//    CustomerLister(JdbcTemplate jdbc) {
+//        this.jdbc = jdbc;
 //    }
-
-    CustomerLister(JdbcTemplate jdbc) {
-        this.jdbc = jdbc;
-    }
-
-//    @Override public void run(ApplicationArguments args) throws Exception {
+//
+////    @Override public void run(ApplicationArguments args) throws Exception {
+////        String query = "SELECT * FROM user";
+////        try (Connection con = dataSource.getConnection();
+////             Statement stmt = con.createStatement();
+////        ResultSet rs = stmt.executeQuery(query)) {
+////            while (rs.next()) {
+////                log.info("User [name={}]",rs.getString(1));
+////            }
+////        }
+////    }
+//    @Override
+//    public void run(ApplicationArguments args){
 //        String query = "SELECT * FROM user";
-//        try (Connection con = dataSource.getConnection();
-//             Statement stmt = con.createStatement();
-//        ResultSet rs = stmt.executeQuery(query)) {
-//            while (rs.next()) {
-//                log.info("User [name={}]",rs.getString(1));
-//            }
-//        }
+//        jdbc.query(query, resultSet -> {
+//
+//            log.info("User[id={}]",
+//                    resultSet.getString(1));
+//        });
+//
 //    }
-    @Override
-    public void run(ApplicationArguments args){
-        String query = "SELECT * FROM user";
-        jdbc.query(query, resultSet -> {
-
-            log.info("User[id={}]",
-                    resultSet.getString(1));
-        });
-
-    }
-}
+//}

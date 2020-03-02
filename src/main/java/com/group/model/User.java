@@ -1,33 +1,33 @@
 package com.group.model;
 
-import org.springframework.stereotype.Component;
+import javax.persistence.*;
+import java.util.List;
 
-@Component
+@Entity
+@Table(name = "users")
 public class User {
-
-
-    private String id;
-    private String name;
+    @Id @Column(nullable = false)
     private String username;
+
+    @Column(nullable = false)
     private String email;
-    private String emailConfirm;
+
+    @Column(nullable = false)
     private String password;
-    private String photoLocation;
 
-    public String getId() {
-        return id;
-    }
+    @OneToMany(mappedBy = "podcasts")
+    private List<Podcast> podcasts;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    private Byte[] photo;
 
-    public String getName() {
-        return name;
-    }
+    private String token;
 
-    public void setName(String name) {
-        this.name = name;
+    public User(){ }
+
+    public User(String username, String email, String password){
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 
     public String getUsername() {
@@ -46,14 +46,6 @@ public class User {
         this.email = email;
     }
 
-    public String getEmailConfirm() {
-        return emailConfirm;
-    }
-
-    public void setEmailConfirm(String emailConfirm) {
-        this.emailConfirm = emailConfirm;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -62,24 +54,26 @@ public class User {
         this.password = password;
     }
 
-    public String getPhotoLocation() {
-        return photoLocation;
-    }
+    public Byte[] getPhoto() { return photo; }
 
-    public void setPhotoLocation(String photoLocation) {
-        this.photoLocation = photoLocation;
-    }
+    public void setPhoto(Byte[] photo) { this.photo = photo; }
+
+    public String getToken() { return token; }
+
+    public void setToken(String token) { this.token = token; }
+
+    public List<Podcast> getPodcasts() { return podcasts; }
+
+    public void setPodcasts(List<Podcast> podcasts) { this.podcasts = podcasts; }
 
     @Override
     public String toString() {
         return "User{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
+                "token='" + token + '\'' +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
-                ", emailConfirm='" + emailConfirm + '\'' +
                 ", password='" + password + '\'' +
-                ", photoLocation='" + photoLocation + '\'' +
+                ", photo='" + photo + '\'' +
                 '}';
     }
 }
