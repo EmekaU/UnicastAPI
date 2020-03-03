@@ -15,6 +15,9 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,7 +27,8 @@ import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
 
-public class DriveQuickstart {
+@Component
+public class DriveQuickstart implements ApplicationRunner {
     private static final String APPLICATION_NAME = "Google Drive API Java Quickstart";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
@@ -60,7 +64,8 @@ public class DriveQuickstart {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    public static void main(String... args) throws IOException, GeneralSecurityException {
+    @Override
+    public void run(ApplicationArguments args) throws IOException, GeneralSecurityException {
         // Build a new authorized API client service.
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
@@ -81,5 +86,16 @@ public class DriveQuickstart {
                 System.out.printf("%s (%s)\n", file.getName(), file.getId());
             }
         }
+    }
+
+    public void createFolder(){
+        File fileMetadata = new File();
+        fileMetadata.setName("Invoices");
+        fileMetadata.setMimeType("application/vnd.google-apps.folder");
+        Drive.Files.Create driveService;
+        File file = driveService.files().create(fileMetadata)
+                .setFields("id")
+                .execute();
+        System.out.println("Folder ID: " + file.getId());
     }
 }
