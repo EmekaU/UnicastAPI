@@ -26,7 +26,6 @@ public class Podcast {
     @JoinColumn(name = "username")
     private User creator;
 
-
     public Long getId() {
         return id;
     }
