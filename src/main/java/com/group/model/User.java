@@ -1,21 +1,22 @@
 package com.group.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
 public class User {
-    @Id @Column(nullable = false)
+    @Id @Column(nullable = false) @Max(15)
     private String username;
 
-    @Column(nullable = false)
+    @Column(nullable = false) @Max(30)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false) @Max(30)
     private String password;
 
-    @OneToMany(mappedBy = "podcasts")
+    @OneToMany(mappedBy = "podcasts", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Podcast> podcasts;
 
     private Byte[] photo;
@@ -64,7 +65,7 @@ public class User {
 
     public List<Podcast> getPodcasts() { return podcasts; }
 
-    public void setPodcasts(List<Podcast> podcasts) { this.podcasts = podcasts; }
+    public void addPodcast(Podcast podcast) { this.podcasts.add(podcast); }
 
     @Override
     public String toString() {
@@ -77,4 +78,3 @@ public class User {
                 '}';
     }
 }
- 

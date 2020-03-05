@@ -15,13 +15,13 @@ public class UserService {
         if(userRepo.existsById(username)){
             return false;
         }
+//
+//        User user = new User(username, email, password);
+//        user.setToken(null);
+//        user.setPhoto(null);
+//        user.setPodcasts(null);
 
-        User user = new User(username, email, password);
-        user.setToken(null);
-        user.setPhoto(null);
-        user.setPodcasts(null);
-
-        userRepo.save(user);
+//        userRepo.save(user);
         return true;
     }
 

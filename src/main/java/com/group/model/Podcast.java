@@ -2,14 +2,16 @@ package com.group.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
-@SequenceGenerator(name="#whatever name we assign to this table's id", initialValue=1, allocationSize=1)
 @Table(name = "podcasts")
+@SequenceGenerator(name="podcasts_id_seq", initialValue=1, allocationSize=1)
 public class Podcast {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private long id;
 
     private Category category; // Not a table, just a data type.
 
@@ -19,12 +21,28 @@ public class Podcast {
     @Max(250)
     private String description;
 
-    private int length;
-    private Date creationDate;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "createdon")
+    private Date creationDate = new Date();
 
     @ManyToOne
     @JoinColumn(name = "username")
+    @Column(nullable = false)
     private User creator;
+
+    @Column(nullable = false)
+    private byte[] content;
+
+    @OneToMany(mappedBy = "comments", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Comment> comments;
+
+    public Podcast(){ }
+
+    public Podcast(Category category, String title, String description, User creator, byte[] file){
+        this.category = category;
+        this.title = title;
+        this.description = description;
+    }
 
     public Long getId() {
         return id;
@@ -58,14 +76,6 @@ public class Podcast {
         this.description = description;
     }
 
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
     public Date getCreationDate() {
         return creationDate;
     }
@@ -82,6 +92,20 @@ public class Podcast {
         this.creator = creator;
     }
 
+    public byte[] getContent() { return content; }
+
+    public void setContent(byte[] content) { this.content = content; }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void addComments(Comment comment){
+        this.comments.add(comment);
+        comment.setPodcast(this);
+    }
+
+
     @Override
     public String toString() {
         return "Podcast{" +
@@ -89,9 +113,9 @@ public class Podcast {
                 ", category=" + category +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", length=" + length +
                 ", creationDate=" + creationDate +
                 ", creator=" + creator +
+                ", file=" + Arrays.toString(content) +
                 '}';
     }
 }
