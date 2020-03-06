@@ -1,8 +1,8 @@
 package com.group.repository;
 
-import com.group.model.Podcast;
+import com.group.dao.PodcastDAO;
 import org.springframework.data.repository.CrudRepository;
 
-public interface PodcastRepo extends CrudRepository<Podcast, Long> {
+public interface PodcastRepo extends CrudRepository<PodcastDAO, Long> {
 
 }
