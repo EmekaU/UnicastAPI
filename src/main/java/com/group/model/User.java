@@ -1,6 +1,7 @@
 package com.group.model;
 
 public class User {
+
     private String username;
 
     private String email;
