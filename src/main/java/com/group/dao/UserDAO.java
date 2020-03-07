@@ -17,7 +17,7 @@ public class UserDAO {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long user_id;
 
-    @Column(nullable = false, unique = true) @Max(15)
+    @Column(nullable = false, unique = true) @Max(30)
     private String username;
 
     @Column(nullable = false, unique = true) @Max(30)
