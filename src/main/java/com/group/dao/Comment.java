@@ -3,7 +3,7 @@ package com.group.dao;
 import javax.persistence.*;
 
 @Table(name = "comments")
-@SequenceGenerator(name="comments_id_seq", initialValue=1, allocationSize=1)
+@SequenceGenerator(name="comments_comment_id_seq", initialValue=1, allocationSize=1)
 public class Comment {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)

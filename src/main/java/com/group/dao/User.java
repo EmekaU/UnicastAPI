@@ -92,6 +92,7 @@ public class User {
         podcast.setCreator(null);
         this.podcasts.remove(podcast);
     }
+
     public Set<Subscriptions> getSubscribers() { return subscribers;}
 
     public void addSubscriber(Set<Subscriptions> subscribers) { this.subscribers = subscribers; }
