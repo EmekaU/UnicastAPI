@@ -1,7 +1,7 @@
 package com.group.service;
 
 import com.group.repository.UserRepo;
-import com.group.dao.UserDAO;
+import com.group.dao.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +17,13 @@ public class UserService {
             return false;
             //return null
         }
-        UserDAO userDao = new UserDAO(username, email, password);
+        User userDao = new User(username, email, password);
         userRepo.save(userDao);
         // create and return token
         return true;
     }
 
-    public boolean updateUser(UserDAO userDao){
+    public boolean updateUser(User userDao){
         userRepo.save(userDao);
         return true;
     }
