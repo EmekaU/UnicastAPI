@@ -26,7 +26,7 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @OneToMany(mappedBy = "podcasts", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Podcast> podcasts;
 
     private Byte[] photo;
@@ -34,10 +34,10 @@ public class User {
     @JsonIgnore
     private String sessionId;
 
-    @OneToMany(mappedBy = "subscriptions", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "subscriber", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Subscriptions> subscribers;
 
-    @OneToMany(mappedBy = "subscriptions", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "subscribedTo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Subscriptions> subscriptions;
 
     public User(){ }

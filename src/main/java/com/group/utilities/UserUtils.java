@@ -7,7 +7,9 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.group.model.User;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserUtils {
 
     private static final String SECRET = "Unicast.Authenticated.User.2020";

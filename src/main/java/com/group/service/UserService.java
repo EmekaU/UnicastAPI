@@ -5,6 +5,8 @@ import com.group.dao.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public class UserService {
 
@@ -12,14 +14,19 @@ public class UserService {
     private UserRepo userRepo;
 
     //	Add User to User table
-    public boolean createUser(String username, String email, String password){
-        if(userRepo.existsById(username)){
+    public boolean createUser(Map<String,String> body){
+
+        String username = body.get("username");
+        String email = body.get("email");
+        String password = body.get("password");
+        // TODO: hash password
+        if(userRepo.existsByUsername(username)){
             return false;
-            //return null
         }
+
         User userDao = new User(username, email, password);
         userRepo.save(userDao);
-        // create and return token
+        // TODO: create and return token
         return true;
     }
 

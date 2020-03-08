@@ -2,6 +2,7 @@ package com.group.dao;
 
 import javax.persistence.*;
 
+@Entity
 @Table(name = "comments")
 @SequenceGenerator(name="comments_comment_id_seq", initialValue=1, allocationSize=1)
 public class Comment {
@@ -13,12 +14,11 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "podcast_id")
-    @Column(nullable = false)
-    private Podcast podcast;
+    private Podcast podcast; // Column not allowed on a ManyToOne property.
 
     public Comment(){}
 
-    public Comment(long comment_id, String content){
+    public Comment(String content){
         this.content = content;
     }
 

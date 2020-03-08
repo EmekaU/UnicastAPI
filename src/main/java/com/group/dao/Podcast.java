@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+@Entity
 @Table(name = "podcasts")
 @SequenceGenerator(name="podcasts_id_seq", initialValue=1, allocationSize=1)
 public class Podcast {
@@ -29,13 +30,12 @@ public class Podcast {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @Column(nullable = false)
     private User creator;
 
     @Column(name = "content", nullable = false)
     private byte[] content;
 
-    @OneToMany(mappedBy = "comments", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "podcast", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Comment> comments;
 
     public Podcast(){ }

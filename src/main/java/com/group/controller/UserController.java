@@ -14,7 +14,7 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "users")
+@RequestMapping
 public class UserController {
 
     @Autowired
@@ -24,7 +24,7 @@ public class UserController {
     @RequestMapping(value = "/create", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createUser(@RequestBody Map <String, String> body){
 
-        boolean userisCreated = userService.createUser(body.get("username"), body.get("email"), body.get("password"));
+        boolean userisCreated = userService.createUser(body);
 
         HttpStatus status = userisCreated? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return new ResponseEntity<>(status);
