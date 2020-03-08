@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Comment {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    private long comment_id;
 
     private String content;
 
@@ -16,19 +16,15 @@ public class Comment {
     @Column(nullable = false)
     private Podcast podcast;
 
-    public Comment(){
+    public Comment(){}
 
-    }
-
-    public Comment(long id, String content, Podcast podcast){
-        this.id = id;
+    public Comment(long comment_id, String content){
         this.content = content;
-        this.podcast = podcast;
     }
 
-    public long getId() { return id; }
+    public long getId() { return comment_id; }
 
-    public void setId(long id) { this.id = id; }
+    public void setId(long comment_id) { this.comment_id = comment_id; }
 
     public String getContent() { return content; }
 
@@ -45,7 +41,7 @@ public class Comment {
     @Override
     public String toString() {
         return "Comment{" +
-                "id=" + id +
+                "id=" + comment_id +
                 ", content='" + content + '\'' +
                 ", podcast=" + podcast +
                 '}';

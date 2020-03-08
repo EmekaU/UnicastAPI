@@ -17,14 +17,14 @@ public class Podcast {
 
     private Category category; // Not a table, just a data type.
 
-    @Max(250)
+    @Max(250) @Column(name = "title")
     private String title;
 
-    @Max(250)
+    @Max(250) @Column(name = "description")
     private String description;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "createdon")
+    @Column(name = "createdon", nullable = false)
     private Date creationDate = new Date();
 
     @ManyToOne
@@ -32,7 +32,7 @@ public class Podcast {
     @Column(nullable = false)
     private User creator;
 
-    @Column(nullable = false)
+    @Column(name = "content", nullable = false)
     private byte[] content;
 
     @OneToMany(mappedBy = "comments", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -40,10 +40,10 @@ public class Podcast {
 
     public Podcast(){ }
 
-    public Podcast(Category category, String title, String description, long user_id, byte[] file){
+    public Podcast(Category category, String title, String description, byte[] content){
         this.category = category;
         this.title = title;
-        // set user?
+        this.content = content;
         this.description = description;
     }
 
@@ -103,11 +103,11 @@ public class Podcast {
         return comments;
     }
 
-    public void addComments(Comment comment){
+    public void addComment(Comment comment){
         this.comments.add(comment);
         comment.setPodcast(this);
     }
-    
+
     @Override
     public String toString() {
         return "Podcast{" +

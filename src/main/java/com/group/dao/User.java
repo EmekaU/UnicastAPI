@@ -27,7 +27,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "podcasts", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Podcast> podcastDAOS;
+    private List<Podcast> podcasts;
 
     private Byte[] photo;
 
@@ -81,10 +81,17 @@ public class User {
 
     public void setSessionId(String sessionId) { this.sessionId = sessionId; }
 
-    public List<Podcast> getPodcastDAOS() { return podcastDAOS; }
+    public List<Podcast> getPodcasts() { return podcasts; }
 
-    public void addPodcast(Podcast podcastDAO) { this.podcastDAOS.add(podcastDAO); }
+    public void addPodcast(Podcast podcast) {
+        this.podcasts.add(podcast);
+        podcast.setCreator(this);
+    }
 
+    public void deletePodcast(Podcast podcast){
+        podcast.setCreator(null);
+        this.podcasts.remove(podcast);
+    }
     public Set<Subscriptions> getSubscribers() { return subscribers;}
 
     public void addSubscriber(Set<Subscriptions> subscribers) { this.subscribers = subscribers; }
@@ -96,12 +103,10 @@ public class User {
     @Override
     public String toString() {
         return "UserDAO{" +
-                "user_id=" + user_id +
+                "id=" + user_id +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", podcastDAOS=" + podcastDAOS +
-                ", photo=" + Arrays.toString(photo) +
                 ", sessionId='" + sessionId + '\'' +
                 ", subscribers=" + subscribers +
                 ", subscriptions=" + subscriptions +
