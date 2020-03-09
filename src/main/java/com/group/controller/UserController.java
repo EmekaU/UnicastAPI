@@ -14,14 +14,14 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
-@RequestMapping
+@RequestMapping("users")
 public class UserController {
 
     @Autowired
     private UserService userService;
     private static Logger log = LogManager.getLogger(UserController.class.getName());
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createUser(@RequestBody Map <String, String> body){
 
         boolean userisCreated = userService.createUser(body);

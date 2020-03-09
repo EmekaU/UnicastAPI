@@ -11,9 +11,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@SequenceGenerator(name="users_id_seq", initialValue=1, allocationSize=1)
+@SequenceGenerator(name="users_seq", initialValue=1, allocationSize=1)
 public class User {
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
     private long user_id;
 
     @Column(nullable = false, unique = true) @Max(30)

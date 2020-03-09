@@ -10,10 +10,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "podcasts")
-@SequenceGenerator(name="podcasts_id_seq", initialValue=1, allocationSize=1)
+@SequenceGenerator(name="podcasts_seq", initialValue=1, allocationSize=1)
 public class Podcast {
 
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "podcasts_seq")
     private long podcast_id;
 
     private Category category; // Not a table, just a data type.

@@ -20,11 +20,13 @@ public class UserService {
         String email = body.get("email");
         String password = body.get("password");
         // TODO: hash password
+
         if(userRepo.existsByUsername(username)){
             return false;
         }
 
         User userDao = new User(username, email, password);
+        System.out.println(userDao.toString());
         userRepo.save(userDao);
         // TODO: create and return token
         return true;
