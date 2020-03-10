@@ -6,10 +6,10 @@ import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.MediaType;
-
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+//
+//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.servlet.config.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -44,12 +44,12 @@ public class UnicastConfiguration{
 //    }
 
 }
-
-@EnableWebSecurity
-class SecurityConfigurer extends WebSecurityConfigurerAdapter {
-
-    @Override
-    protected void configure(HttpSecurity security) throws Exception{
-        security.httpBasic().disable();
-    }
-}
+//
+//@EnableWebSecurity
+//class SecurityConfigurer extends WebSecurityConfigurerAdapter {
+//
+//    @Override
+//    protected void configure(HttpSecurity security) throws Exception{
+//        security.httpBasic().disable();
+//    }
+//}

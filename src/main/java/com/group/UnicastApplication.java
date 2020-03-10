@@ -6,8 +6,6 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 @SpringBootApplication
-//@ComponentScan(basePackages = "com.group")
-//@PropertySource({"classpath:application.properties"})
 public class UnicastApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
@@ -15,10 +13,10 @@ public class UnicastApplication extends SpringBootServletInitializer {
         SpringApplication.run(UnicastApplication.class, args);
     }
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(UnicastApplication.class);
-    }
+//    @Override
+//    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+//        return builder.sources(UnicastApplication.class);
+//    }
 }
 
 //@Component
