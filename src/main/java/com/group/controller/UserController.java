@@ -35,5 +35,5 @@ public class UserController {
 
         HttpStatus status = userisCreated? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return new ResponseEntity<>(status);
-    }
+    }git 
 }
