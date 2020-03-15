@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @SequenceGenerator(name="users_seq", initialValue=1, allocationSize=1)
-public class User {
+public class UserDao {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
     private long user_id;
 
@@ -40,9 +40,9 @@ public class User {
     @OneToMany(mappedBy = "subscribedTo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Subscriptions> subscriptions;
 
-    public User(){ }
+    public UserDao(){ }
 
-    public User(String username, String email, String password){
+    public UserDao(String username, String email, String password){
         this.username = username;
         this.email = email;
         this.password = password;
