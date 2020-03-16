@@ -17,53 +17,49 @@ public class UserController {
     private UserService userService;
     private static Logger log = LogManager.getLogger(UserController.class.getName());
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String login(@RequestBody Map<String, String> body){
-
-        // check if user exists in DB
-        // create token
-        // send token
-
-        String username = body.get("username");
-        HttpStatus status = HttpStatus.NOT_FOUND;
-
-        if(userService.userExists(username)){
-
-            status = HttpStatus.OK;
-            return "User Token";
-        }
-        return null;
-    }
-
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createUser(@RequestBody Map <String, String> body) {
 
-        // Validate User Info
-        // Store User in DB if username doesn't exist already
-        // Generate access Token for this User
-        // Store username : access token in noSql DB
-        // Create Token by encoding user
-        // Send Token to user
+        String token = userService.createUser(body);
 
-        // If error: send Bad Request status.
-        boolean userisCreated = userService.createUser(body);
+        HttpStatus status = token != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
 
-        HttpStatus status = userisCreated ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-        return new ResponseEntity<>(status);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("token", token);
+
+        return new ResponseEntity<>(responseHeaders, status);
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> loginUser(@RequestBody Map<String, String> body){
+
+        String token = userService.processLogin(body);
+
+        HttpStatus status = token != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("token", token);
+
+        return new ResponseEntity<>(responseHeaders, status);
+
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateUser(@RequestBody Map<String, String> body, @RequestHeader Map<String, String> header){
+
+        String token = userService.updateUser(body, header.get("token"));
+
+        HttpStatus status = token != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("token", token);
+
+        return new ResponseEntity<>(responseHeaders, status);
     }
 
     @RequestMapping(value = "logout", method = RequestMethod.POST)
-    public void logout(HttpRequest request){
+    public String logout(){
 
-        // change signing key
-        HttpHeaders header = request.getHeaders();
-
-        header.get("refreshToken");
-        header.get("userToken");
-
-        // Retrieve access Token
-        //
-        // remove token from DB.
-
+        return null;
     }
 }

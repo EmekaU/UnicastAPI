@@ -10,7 +10,6 @@ import com.group.model.User;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.function.Function;
 
 @Component
 public class JwtUtils {
@@ -24,7 +23,8 @@ public class JwtUtils {
             // return token.
             return JWT.create()
                     .withClaim("string", stringToEncode)
-                    .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                    // expires in 5 minutes
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
                     .sign(algorithm);
         } catch (JWTCreationException exception){
             throw new IllegalStateException("Invalid Signing configuration / Couldn't convert claims", exception);
@@ -51,7 +51,6 @@ public class JwtUtils {
 
             user = new User();
             user.setUsername(jwt.getClaim("username").asString());
-            user.setEmail(jwt.getClaim("email").asString());
             user.setPassword(jwt.getClaim("password").asString());
         }catch (JWTVerificationException e){
             e.printStackTrace();
@@ -70,9 +69,8 @@ public class JwtUtils {
             Algorithm algorithm = Algorithm.HMAC256(SECRET);
             token = JWT.create()
                     .withClaim("username", user.getUsername())
-                    .withClaim("email", user.getEmail())
                     .withClaim("password", user.getPassword())
-                    .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
                     .sign(algorithm);
         } catch (JWTVerificationException e) {
             e.printStackTrace();
@@ -81,7 +79,7 @@ public class JwtUtils {
         return token;
     }
 
-    public Boolean tokenIsExpired(String token){
+    public static Boolean tokenIsExpired(String token){
         try{
             DecodedJWT jwt = JWT.decode(token);
             return jwt.getExpiresAt().before(new Date());

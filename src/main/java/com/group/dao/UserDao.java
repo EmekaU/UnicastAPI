@@ -31,8 +31,8 @@ public class UserDao {
 
     private Byte[] photo;
 
-    @JsonIgnore
-    private String sessionId;
+//    @JsonIgnore
+//    private String refreshToken;
 
     @OneToMany(mappedBy = "subscriber", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Subscriptions> subscribers;
@@ -77,9 +77,9 @@ public class UserDao {
 
     public void setPhoto(Byte[] photo) { this.photo = photo; }
 
-    public String getSessionId() { return sessionId; }
-
-    public void setSessionId(String sessionId) { this.sessionId = sessionId; }
+//    public String getRefreshToken() { return refreshToken; }
+//
+//    public void setRefreshToken(String refreshToken) { this.refreshToken = refreshToken; }
 
     public List<Podcast> getPodcasts() { return podcasts; }
 
@@ -108,7 +108,7 @@ public class UserDao {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", sessionId='" + sessionId + '\'' +
+//                ", refreshToken='" + refreshToken + '\'' +
                 ", subscribers=" + subscribers +
                 ", subscriptions=" + subscriptions +
                 '}';
