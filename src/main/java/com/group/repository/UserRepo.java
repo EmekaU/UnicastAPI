@@ -13,6 +13,9 @@ public interface UserRepo extends JpaRepository<UserDao, String> {
 
     public boolean deleteUserDaoByUsername(String username);
 
-    // search for users with username containing x, y, z
+    public UserDao getUserDaoByUsername(String username);
 
+    public List<UserDao> getUserDaosByUsernameContains(String match);
+
+    // search for users with username containing x, y, z
 }
