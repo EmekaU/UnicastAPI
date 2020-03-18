@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class PasswordHash {
 
-    private final String SALT = "Unicast-group-project-2020";
+    private final byte [] SALT =  new byte[16];
 
     public String generateHash(String password) throws InvalidKeySpecException, NoSuchAlgorithmException {
 

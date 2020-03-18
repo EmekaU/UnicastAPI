@@ -30,7 +30,7 @@ public class Podcast {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User creator;
+    private UserDao creator;
 
     @Column(name = "content", nullable = false)
     private byte[] content;
@@ -87,11 +87,11 @@ public class Podcast {
         this.creationDate = creationDate;
     }
 
-    public User getCreator() {
+    public UserDao getCreator() {
         return creator;
     }
 
-    public void setCreator(User creator) {
+    public void setCreator(UserDao creator) {
         this.creator = creator;
     }
 

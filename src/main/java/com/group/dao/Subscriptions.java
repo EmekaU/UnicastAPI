@@ -12,10 +12,10 @@ public class Subscriptions {
     @ManyToOne
     @MapsId("subscribers")
     @JoinColumn(name = "user_id")
-    User subscriber;
+    UserDao subscriber;
 
     @ManyToOne
     @MapsId("subscribedTo")
     @JoinColumn(name = "user_id")
-    User subscribedTo;
+    UserDao subscribedTo;
 }

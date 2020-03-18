@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @SequenceGenerator(name="users_seq", initialValue=1, allocationSize=1)
-public class User {
+public class UserDao {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
     private long user_id;
 
@@ -31,8 +31,8 @@ public class User {
 
     private Byte[] photo;
 
-    @JsonIgnore
-    private String sessionId;
+//    @JsonIgnore
+//    private String refreshToken;
 
     @OneToMany(mappedBy = "subscriber", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Subscriptions> subscribers;
@@ -40,9 +40,9 @@ public class User {
     @OneToMany(mappedBy = "subscribedTo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Subscriptions> subscriptions;
 
-    public User(){ }
+    public UserDao(){ }
 
-    public User(String username, String email, String password){
+    public UserDao(String username, String email, String password){
         this.username = username;
         this.email = email;
         this.password = password;
@@ -77,9 +77,9 @@ public class User {
 
     public void setPhoto(Byte[] photo) { this.photo = photo; }
 
-    public String getSessionId() { return sessionId; }
-
-    public void setSessionId(String sessionId) { this.sessionId = sessionId; }
+//    public String getRefreshToken() { return refreshToken; }
+//
+//    public void setRefreshToken(String refreshToken) { this.refreshToken = refreshToken; }
 
     public List<Podcast> getPodcasts() { return podcasts; }
 
@@ -108,7 +108,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", sessionId='" + sessionId + '\'' +
+//                ", refreshToken='" + refreshToken + '\'' +
                 ", subscribers=" + subscribers +
                 ", subscriptions=" + subscriptions +
                 '}';
