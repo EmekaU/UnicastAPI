@@ -51,7 +51,6 @@ public class UserService {
 
         User user = new User(username, password);
         String token = JwtUtils.encodeUser(user);
-        System.out.println(token);
 
         return token;
     }
@@ -72,32 +71,24 @@ public class UserService {
 
     public String updateUser(Map<String, ? > body, String token){
 
-        // Needs discussion
-
-        // Might have to set preferences in token for category.
         String username = body.get("username").toString();
         String password = body.get("password").toString();
-
+        // update photo
         User user = new User(username, password);
+        
+        User decodedUser = JwtUtils.decodeUser(token);
 
-        if(! JwtUtils.tokenIsExpired(token) && token != null){
+        if(user.equals(decodedUser)){
+ 
+            UserDao userDao = new UserDao();
 
-            User decodedUser = JwtUtils.decodeUser(token);
-
-            if(user.equals(decodedUser)){
-
-                UserDao userDao = new UserDao();
-
-                userDao.setPassword(user.getPassword());
-                if(body.containsKey("photo")){
-                    userDao.setPhoto((Byte[]) body.get("photo"));
-                }
-
-                userRepo.save(userDao);
-                return getNewToken(user);
+            userDao.setPassword(user.getPassword());
+            if(body.containsKey("photo")){
+                userDao.setPhoto((Byte[]) body.get("photo"));
             }
 
-            System.out.println("It seems that the token, " + token + " has been compromised");
+            userRepo.save(userDao);
+            return getNewToken(user);
         }
 
         return null;
@@ -105,34 +96,19 @@ public class UserService {
 
     public boolean deleteUser(String token){
 
-        if(! JwtUtils.tokenIsExpired(token) && token != null) {
-
-            User user = JwtUtils.decodeUser(token);
-            return userRepo.deleteUserDaoByUsername(user.getUsername());
-        }
-
-        return false;
+        User user = JwtUtils.decodeUser(token);
+        return userRepo.deleteUserDaoByUsername(user.getUsername());
     }
 
     public UserDao getUserByUsername(String token){
 
-        if(! JwtUtils.tokenIsExpired(token) && token != null) {
-
-            User user = JwtUtils.decodeUser(token);
-            return userRepo.getUserDaoByUsername(user.getUsername());
-        }
-
-        return null;
+        User user = JwtUtils.decodeUser(token);
+        return userRepo.getUserDaoByUsername(user.getUsername());
     }
 
     public List<UserDao> getUsersByUsernameWith(String token, String word) {
 
-        if(! JwtUtils.tokenIsExpired(token) && token != null){
-
-            return userRepo.getUserDaosByUsernameContains(word);
-        }
-
-        return null;
+        return userRepo.getUserDaosByUsernameContains(word);
     }
 
 }
