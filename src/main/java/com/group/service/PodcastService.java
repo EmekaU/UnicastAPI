@@ -5,6 +5,7 @@ import com.group.model.Category;
 import com.group.model.User;
 import com.group.repository.PodcastRepo;
 import com.group.utilities.JwtUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -12,11 +13,13 @@ import java.util.Map;
 @Service
 public class PodcastService {
 
-    private final PodcastRepo podcastRepo;
+    @Autowired
+    private PodcastRepo podcastRepo;
 
-    public PodcastService(PodcastRepo podcastRepo) {
-        this.podcastRepo = podcastRepo;
-    }
+//    @Autowired
+//    public PodcastService(PodcastRepo podcastRepo) {
+//        this.podcastRepo = podcastRepo;
+//    }
 
     private Category getCategory(String categoryField){
 
