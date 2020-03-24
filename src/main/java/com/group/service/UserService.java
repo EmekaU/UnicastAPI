@@ -28,9 +28,9 @@ public class UserService {
         return JwtUtils.encodeUser(user);
     }
 
-    private boolean userExists(String username){
+    private boolean userExists(String username, String password){
 
-        return userRepo.existsByUsername(username);
+        return userRepo.existsByUsernameAndPassword(username, password);
     }
 
     //	Add User to User table
@@ -41,7 +41,7 @@ public class UserService {
         String password = body.get("password");
         // TODO: hash password
 
-        if(this.userExists(username)){
+        if(this.userExists(username, password)){
             return null;
         }
 
@@ -60,7 +60,7 @@ public class UserService {
         String username = body.get("username");
         String password = body.get("password");
 
-        if(this.userExists(username)){
+        if(this.userExists(username, password)){
 
             User user = new User(username, password);
             return getNewToken(user);
@@ -106,7 +106,7 @@ public class UserService {
         return userRepo.getUserDaoByUsername(user.getUsername());
     }
 
-    public List<UserDao> getUsersByUsernameWith(String token, String word) {
+    public List<UserDao> getUsersByUsernameWith(String word) {
 
         return userRepo.getUserDaosByUsernameContains(word);
     }

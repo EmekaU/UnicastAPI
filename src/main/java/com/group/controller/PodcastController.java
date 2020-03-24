@@ -20,9 +20,9 @@ import java.util.Map;
 @RequestMapping(value = "podcast")
 public class PodcastController {
 
+    @Autowired
     private final PodcastService podcastService;
 
-    @Autowired
     public PodcastController(PodcastService podcastService){
         this.podcastService = podcastService;
     }

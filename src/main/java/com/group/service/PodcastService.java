@@ -8,6 +8,7 @@ import com.group.utilities.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -16,10 +17,9 @@ public class PodcastService {
     @Autowired
     private PodcastRepo podcastRepo;
 
-//    @Autowired
-//    public PodcastService(PodcastRepo podcastRepo) {
-//        this.podcastRepo = podcastRepo;
-//    }
+    public PodcastService(PodcastRepo podcastRepo) {
+        this.podcastRepo = podcastRepo;
+    }
 
     private Category getCategory(String categoryField){
 
@@ -52,4 +52,14 @@ public class PodcastService {
 
         return false;
     }
+    
+//    public Podcast getPodcastByIdAndCreator(long Id, String creator) {
+//    	return podcastRepo.getPodcastById(Id, creator);
+//    }
+
+    public List<Podcast> getPodcastsByTitle(String query){
+
+        return podcastRepo.getPodcastsByTitleIsContainingOrderByTitleAsc(query);
+    }
+
 }

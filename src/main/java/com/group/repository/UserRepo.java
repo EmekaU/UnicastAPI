@@ -9,11 +9,11 @@ import java.util.List;
 @Repository
 public interface UserRepo extends JpaRepository<UserDao, String> {
 
-    public boolean existsByUsername(String username);
-
-    public boolean deleteUserDaoByUsername(String username);
+    public boolean existsByUsernameAndPassword(String username, String Password);
 
     public UserDao getUserDaoByUsername(String username);
+
+    public boolean deleteUserDaoByUsername(String username);
 
     public List<UserDao> getUserDaosByUsernameContains(String match);
 

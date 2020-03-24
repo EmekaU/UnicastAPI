@@ -31,13 +31,10 @@ public class UserDao {
 
     private Byte[] photo;
 
-//    @JsonIgnore
-//    private String refreshToken;
-
-    @OneToMany(mappedBy = "subscriber", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "subscriberid", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Subscriptions> subscribers;
 
-    @OneToMany(mappedBy = "subscribedTo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "subscribetoid", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Subscriptions> subscriptions;
 
     public UserDao(){ }
@@ -77,10 +74,6 @@ public class UserDao {
 
     public void setPhoto(Byte[] photo) { this.photo = photo; }
 
-//    public String getRefreshToken() { return refreshToken; }
-//
-//    public void setRefreshToken(String refreshToken) { this.refreshToken = refreshToken; }
-
     public List<Podcast> getPodcasts() { return podcasts; }
 
     public void addPodcast(Podcast podcast) {
@@ -108,7 +101,6 @@ public class UserDao {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-//                ", refreshToken='" + refreshToken + '\'' +
                 ", subscribers=" + subscribers +
                 ", subscriptions=" + subscriptions +
                 '}';
