@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @SequenceGenerator(name="users_seq", initialValue=1, allocationSize=1)
-public class User {
+public class UserDao {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
     private long user_id;
 
@@ -31,18 +31,15 @@ public class User {
 
     private Byte[] photo;
 
-    @JsonIgnore
-    private String sessionId;
-
-    @OneToMany(mappedBy = "subscriber", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "subscriberid", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Subscriptions> subscribers;
 
-    @OneToMany(mappedBy = "subscribedTo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "subscribetoid", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Subscriptions> subscriptions;
 
-    public User(){ }
+    public UserDao(){ }
 
-    public User(String username, String email, String password){
+    public UserDao(String username, String email, String password){
         this.username = username;
         this.email = email;
         this.password = password;
@@ -77,10 +74,6 @@ public class User {
 
     public void setPhoto(Byte[] photo) { this.photo = photo; }
 
-    public String getSessionId() { return sessionId; }
-
-    public void setSessionId(String sessionId) { this.sessionId = sessionId; }
-
     public List<Podcast> getPodcasts() { return podcasts; }
 
     public void addPodcast(Podcast podcast) {
@@ -108,7 +101,6 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", sessionId='" + sessionId + '\'' +
                 ", subscribers=" + subscribers +
                 ", subscriptions=" + subscriptions +
                 '}';

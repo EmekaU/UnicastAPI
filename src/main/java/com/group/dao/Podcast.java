@@ -28,9 +28,9 @@ public class Podcast {
     @Column(name = "createdon", nullable = false)
     private Date creationDate = new Date();
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User creator;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id", referencedColumnName="user_id")
+    private UserDao creator;
 
     @Column(name = "content", nullable = false)
     private byte[] content;
@@ -87,11 +87,11 @@ public class Podcast {
         this.creationDate = creationDate;
     }
 
-    public User getCreator() {
+    public UserDao getCreator() {
         return creator;
     }
 
-    public void setCreator(User creator) {
+    public void setCreator(UserDao creator) {
         this.creator = creator;
     }
 

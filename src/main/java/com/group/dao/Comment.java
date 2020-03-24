@@ -12,7 +12,7 @@ public class Comment {
 
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "podcast_id")
     private Podcast podcast; // Column not allowed on a ManyToOne property.
 

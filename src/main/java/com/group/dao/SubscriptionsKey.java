@@ -7,9 +7,9 @@ import java.io.Serializable;
 @Embeddable
 public class SubscriptionsKey implements Serializable {
 
-    @Column(name = "subscribers")
+    @Column(name = "subscriberid")
     Long subscriberId;
 
-    @Column(name = "subscribedTo")
+    @Column(name = "subscribetoid")
     Long subscribeToId;
 }

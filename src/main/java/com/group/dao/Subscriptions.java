@@ -9,13 +9,13 @@ public class Subscriptions {
     @EmbeddedId
     SubscriptionsKey id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("subscribers")
-    @JoinColumn(name = "user_id")
-    User subscriber;
+    @JoinColumn(name = "subscriberid", referencedColumnName = "user_id")
+    UserDao subscriberid;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("subscribedTo")
-    @JoinColumn(name = "user_id")
-    User subscribedTo;
+    @JoinColumn(name = "subscribetoid", referencedColumnName = "user_id")
+    UserDao subscribetoid;
 }
