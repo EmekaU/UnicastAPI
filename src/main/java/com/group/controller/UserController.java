@@ -45,14 +45,29 @@ public class UserController {
 
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateUser(@RequestBody Map<String, String> body, @RequestHeader Map<String, String> header) {
+//    @RequestMapping(value = "/update", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<?> updateUser(@RequestBody Map<String, String> body, @RequestHeader Map<String, String> header) {
+//
+//        String token = userService.updateUser(body, header.get(token_key));
+//
+//        HttpStatus status = token != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+//
+//        return new ResponseEntity<>(token, status);
+//    }
 
-        String token = userService.updateUser(body, header.get(token_key));
+    @RequestMapping(value="/subscribe", method = RequestMethod.POST)
+    public ResponseEntity<?> subscribe(@RequestBody Map<String, String> body, @RequestHeader Map<String, String> header){
 
-        HttpStatus status = token != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        if(!header.containsKey(token_key) || JwtUtils.tokenIsExpired(header.get(token_key))) {
 
-        return new ResponseEntity<>(token, status);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        boolean success = userService.toggleSubscription(header.get(token_key), body);
+
+        HttpStatus status = success ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+
+        return new ResponseEntity<>(success, status);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
@@ -71,14 +86,14 @@ public class UserController {
     }
 
     @RequestMapping(value = "/get/{username}", method = RequestMethod.GET)
-    public ResponseEntity<?> getUser(@RequestParam String username, @RequestHeader Map<String, String> header) {
+    public ResponseEntity<?> getUser(@PathVariable("username") String username, @RequestHeader Map<String, String> header) {
     	
     	if(!header.containsKey(token_key) || JwtUtils.tokenIsExpired(header.get(token_key))) {
     		
     		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     	}
 
-        UserDao user = userService.getUserByUsername(username);
+        UserDao user = userService.getUserByUsername(username , header.get(token_key));
 
         HttpStatus status = user != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
 

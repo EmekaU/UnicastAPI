@@ -24,7 +24,7 @@ public class JwtUtils {
             return JWT.create()
                     .withClaim("string", stringToEncode)
                     // expires in 5 minutes
-                    .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                     .sign(algorithm);
         } catch (JWTCreationException exception){
             throw new IllegalStateException("Invalid Signing configuration / Couldn't convert claims", exception);

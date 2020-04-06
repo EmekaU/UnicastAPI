@@ -24,7 +24,7 @@ public class QueryService {
 
 		map.put("users", userService.getUsersByUsernameWith(query));
 		map.put("podcasts", podcastService.getPodcastsByTitle(query));
-		
+
 		return map;
 	}
 }

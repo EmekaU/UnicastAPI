@@ -1,6 +1,9 @@
 package com.group.service;
 
+import com.group.dao.Subscriptions;
+import com.group.dao.SubscriptionsKey;
 import com.group.model.User;
+import com.group.repository.SubscriptionRepo;
 import com.group.repository.UserRepo;
 import com.group.dao.UserDao;
 import com.group.utilities.JwtUtils;
@@ -16,11 +19,15 @@ import java.util.Map;
 public class UserService {
 
     private UserRepo userRepo;
+    private SubscriptionRepo subscriptionRepo;
+
     private static Logger log = LogManager.getLogger(UserService.class.getName());
 
     @Autowired
-    public UserService(UserRepo userRepo){
+    public UserService(UserRepo userRepo, SubscriptionRepo subscriptionRepo){
+
         this.userRepo = userRepo;
+        this.subscriptionRepo = subscriptionRepo;
     }
 
     private String getNewToken(User user){
@@ -50,9 +57,8 @@ public class UserService {
         userRepo.save(userDao);
 
         User user = new User(username, password);
-        String token = JwtUtils.encodeUser(user);
 
-        return token;
+        return getNewToken(user);
     }
 
     public String processLogin(Map<String, String> body){
@@ -68,30 +74,54 @@ public class UserService {
 
         return null;
     }
+//
+//    public String updateUser(Map<String, ? > body, String token){
+//
+//        String username = body.get("username").toString();
+//        String password = body.get("password").toString();
+//        // update photo
+//        User user = new User(username, password);
+//
+//        User decodedUser = JwtUtils.decodeUser(token);
+//
+//        if(user.equals(decodedUser)){
+//
+//            UserDao userDao = new UserDao();
+//
+//            userDao.setPassword(user.getPassword());
+//            if(body.containsKey("photo")){
+//                userDao.setPhoto(body.get("photo").toString());
+//            }
+//
+//            userRepo.save(userDao);
+//            return getNewToken(user);
+//        }
+//
+//        return null;
+//    }
 
-    public String updateUser(Map<String, ? > body, String token){
+    public boolean toggleSubscription(String token, Map<String, String> body){
 
-        String username = body.get("username").toString();
-        String password = body.get("password").toString();
-        // update photo
-        User user = new User(username, password);
-        
-        User decodedUser = JwtUtils.decodeUser(token);
+        User user = JwtUtils.decodeUser(token);
+        Subscriptions subscriptions = new Subscriptions();
 
-        if(user.equals(decodedUser)){
- 
-            UserDao userDao = new UserDao();
+        SubscriptionsKey subscriptionsKey = new SubscriptionsKey();
 
-            userDao.setPassword(user.getPassword());
-            if(body.containsKey("photo")){
-                userDao.setPhoto((Byte[]) body.get("photo"));
-            }
+        subscriptionsKey.setSubscriberId(body.get("subscriberid"));
+        subscriptionsKey.setSubscribeToId(body.get("subscribetoid"));
 
-            userRepo.save(userDao);
-            return getNewToken(user);
+        if(this.subscriptionRepo.existsById(subscriptionsKey)){
+
+            this.subscriptionRepo.deleteById(subscriptionsKey);
+            return true;
         }
+        else{
 
-        return null;
+            subscriptions.setId(subscriptionsKey);
+            this.subscriptionRepo.save(subscriptions);
+
+            return true;
+        }
     }
 
     public boolean deleteUser(String token){
@@ -100,10 +130,9 @@ public class UserService {
         return userRepo.deleteUserDaoByUsername(user.getUsername());
     }
 
-    public UserDao getUserByUsername(String token){
-
-        User user = JwtUtils.decodeUser(token);
-        return userRepo.getUserDaoByUsername(user.getUsername());
+    public UserDao getUserByUsername(String username, String token){
+        JwtUtils.decodeUser(token);
+        return userRepo.getUserDaoByUsername(username);
     }
 
     public List<UserDao> getUsersByUsernameWith(String word) {

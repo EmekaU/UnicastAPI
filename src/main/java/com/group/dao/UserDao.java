@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -12,12 +13,14 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @SequenceGenerator(name="users_seq", initialValue=1, allocationSize=1)
-public class UserDao {
+public class UserDao implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
     private long user_id;
 
     @Column(nullable = false, unique = true) @Max(30)
     private String username;
+
+    private String bio;
 
     @Column(nullable = false, unique = true) @Max(30)
     private String email;
@@ -29,13 +32,13 @@ public class UserDao {
     @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Podcast> podcasts;
 
-    private Byte[] photo;
+    private String photo;
 
     @OneToMany(mappedBy = "subscriberid", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<Subscriptions> subscribers;
+    private Set<Subscriptions> subscriptions;
 
     @OneToMany(mappedBy = "subscribetoid", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<Subscriptions> subscriptions;
+    private Set<Subscriptions> subscribers;
 
     public UserDao(){ }
 
@@ -54,6 +57,10 @@ public class UserDao {
         this.username = username;
     }
 
+    public String getBio() { return bio; }
+
+    public void setBio(String bio) { this.bio = bio; }
+
     public String getEmail() {
         return email;
     }
@@ -70,9 +77,9 @@ public class UserDao {
         this.password = password;
     }
 
-    public Byte[] getPhoto() { return photo; }
+    public String getPhoto() { return photo; }
 
-    public void setPhoto(Byte[] photo) { this.photo = photo; }
+    public void setPhoto(String photo) { this.photo = photo; }
 
     public List<Podcast> getPodcasts() { return podcasts; }
 
@@ -96,11 +103,14 @@ public class UserDao {
 
     @Override
     public String toString() {
-        return "UserDAO{" +
-                "id=" + user_id +
+        return "UserDao{" +
+                "user_id=" + user_id +
                 ", username='" + username + '\'' +
+                ", bio='" + bio + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", podcasts=" + podcasts +
+                ", photo='" + photo + '\'' +
                 ", subscribers=" + subscribers +
                 ", subscriptions=" + subscriptions +
                 '}';
