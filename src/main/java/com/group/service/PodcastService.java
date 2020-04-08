@@ -52,10 +52,16 @@ public class PodcastService {
 
         return false;
     }
-    
-//    public Podcast getPodcastByIdAndCreator(long Id, String creator) {
-//    	return podcastRepo.getPodcastById(Id, creator);
-//    }
+
+    public List<Podcast> getPodcastsBelongingTo(String username){
+
+        return this.podcastRepo.getPodcastByCreator_Username(username);
+    }
+
+    public List<Podcast> getPodcastsByCategory(String category){
+
+        return this.getPodcastsByCategory(category);
+    }
 
     public List<Podcast> getPodcastsByTitle(String query){
 

@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ public class UserService {
 
     private UserRepo userRepo;
     private SubscriptionRepo subscriptionRepo;
+    private EntityManager em;
 
     private static Logger log = LogManager.getLogger(UserService.class.getName());
 
@@ -74,31 +76,30 @@ public class UserService {
 
         return null;
     }
-//
-//    public String updateUser(Map<String, ? > body, String token){
-//
-//        String username = body.get("username").toString();
-//        String password = body.get("password").toString();
-//        // update photo
-//        User user = new User(username, password);
-//
-//        User decodedUser = JwtUtils.decodeUser(token);
-//
-//        if(user.equals(decodedUser)){
-//
-//            UserDao userDao = new UserDao();
-//
-//            userDao.setPassword(user.getPassword());
-//            if(body.containsKey("photo")){
-//                userDao.setPhoto(body.get("photo").toString());
-//            }
-//
-//            userRepo.save(userDao);
-//            return getNewToken(user);
-//        }
-//
-//        return null;
-//    }
+
+    public String updateUser(Map<String, String> body, String token){
+
+        System.out.println(body);
+
+        String username = body.get("username");
+        String password = body.get("password");
+        // update photo
+        User decodedUser = JwtUtils.decodeUser(token);
+
+        // check if loggedIn user's key data is valid. ie, matches token.
+        if(decodedUser.getUsername().equals(username)){
+
+            UserDao userDao = this.userRepo.getUserDaoByUsername(username);
+            userDao.setPhoto(body.get("photo"));
+            userDao.setBio(body.get("bio"));
+            userDao.setEmail(body.get("email"));
+
+            userRepo.save(userDao);
+            return getNewToken(new User(username, password));
+        }
+
+        return null;
+    }
 
     public boolean toggleSubscription(String token, Map<String, String> body){
 

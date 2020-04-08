@@ -45,15 +45,15 @@ public class UserController {
 
     }
 
-//    @RequestMapping(value = "/update", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<?> updateUser(@RequestBody Map<String, String> body, @RequestHeader Map<String, String> header) {
-//
-//        String token = userService.updateUser(body, header.get(token_key));
-//
-//        HttpStatus status = token != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-//
-//        return new ResponseEntity<>(token, status);
-//    }
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateUser(@RequestBody Map<String, String> body, @RequestHeader Map<String, String> header) {
+
+        String token = userService.updateUser(body, header.get(token_key));
+
+        HttpStatus status = token != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+
+        return new ResponseEntity<>(token, status);
+    }
 
     @RequestMapping(value="/subscribe", method = RequestMethod.POST)
     public ResponseEntity<?> subscribe(@RequestBody Map<String, String> body, @RequestHeader Map<String, String> header){

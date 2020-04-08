@@ -14,7 +14,7 @@ public interface PodcastRepo extends CrudRepository<Podcast, Long> {
 
 //    public boolean deletePodcastByPodcast_id(long id);
 
-//    public Podcast getPodcastById(long id, String creator);
+    public List<Podcast> getPodcastByCreator_Username(String username);
 
     public List<Podcast> getPodcastByCategory(Category category);
 

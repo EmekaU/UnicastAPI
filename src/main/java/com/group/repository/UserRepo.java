@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface UserRepo extends JpaRepository<UserDao, String> {
@@ -16,6 +17,4 @@ public interface UserRepo extends JpaRepository<UserDao, String> {
     public boolean deleteUserDaoByUsername(String username);
 
     public List<UserDao> getUserDaosByUsernameContains(String match);
-
-    // search for users with username containing x, y, z
 }
