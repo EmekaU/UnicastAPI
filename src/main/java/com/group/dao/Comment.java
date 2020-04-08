@@ -8,6 +8,7 @@ import javax.persistence.*;
 public class Comment {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comments_seq")
+    @Column()
     private long comment_id;
 
     private String content;
@@ -22,9 +23,9 @@ public class Comment {
         this.content = content;
     }
 
-    public long getId() { return comment_id; }
+    public long getComment_id() { return comment_id; }
 
-    public void setId(long comment_id) { this.comment_id = comment_id; }
+    public void setComment_id(long comment_id) { this.comment_id = comment_id; }
 
     public String getContent() { return content; }
 

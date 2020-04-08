@@ -14,9 +14,9 @@ import java.util.Map;
 @Service
 public class PodcastService {
 
-    @Autowired
     private PodcastRepo podcastRepo;
 
+    @Autowired
     public PodcastService(PodcastRepo podcastRepo) {
         this.podcastRepo = podcastRepo;
     }
@@ -58,10 +58,10 @@ public class PodcastService {
         return this.podcastRepo.getPodcastByCreator_Username(username);
     }
 
-    public List<Podcast> getPodcastsByCategory(String category){
-
-        return this.getPodcastsByCategory(category);
-    }
+//    public List<Podcast> getPodcastsByCategory(String category){
+//
+//        return this.getPodcastsByCategory(category);
+//    }
 
     public List<Podcast> getPodcastsByTitle(String query){
 
