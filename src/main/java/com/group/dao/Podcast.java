@@ -26,7 +26,7 @@ public class Podcast {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "createdon", nullable = false)
-    private Date creationDate = new Date();
+    private Date creationDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName="user_id")
@@ -45,6 +45,7 @@ public class Podcast {
         this.title = title;
         this.content = content;
         this.description = description;
+        this.creationDate = new Date();
     }
 
     public Long getId() {
