@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@CrossOrigin
+@CrossOrigin(origins ="*")
 @RestController
 @RequestMapping("user")
 public class UserController {
@@ -22,6 +22,12 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @RequestMapping(value = "test", method = RequestMethod.GET)
+    public ResponseEntity<?> test() {
+
+        return new ResponseEntity<>("Nice!", HttpStatus.OK);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -63,11 +69,11 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        boolean success = userService.toggleSubscription(header.get(token_key), body);
+        UserDao user = userService.toggleSubscription(header.get(token_key), body);
 
-        HttpStatus status = success ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        HttpStatus status = user != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
 
-        return new ResponseEntity<>(success, status);
+        return new ResponseEntity<>(user, status);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)

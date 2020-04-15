@@ -41,14 +41,18 @@ public class PodcastService {
     public boolean createPodcast(String token, Map<String, String> body){
         if(! JwtUtils.tokenIsExpired(token) && token != null) {
 
+            User user = JwtUtils.decodeUser(token);
+            System.out.println(getCategory(body.get("category")));
             Category category = getCategory(body.get("category"));
             String title = body.get("title");
-            byte[] content = body.get("content").getBytes();
+            String url = body.get("url");
             String description = body.get("description");
 
-            User user = JwtUtils.decodeUser(token);
-            Podcast podcast = new Podcast(category, title, description, content);
+            Podcast podcast = new Podcast(body.get("category"), title, description, url);
             podcast.setCreator(this.userRepo.getUserDaoByUsername(user.getUsername()));
+
+            System.out.println(podcast.toString());
+
             podcastRepo.save(podcast);
             return true;
         }

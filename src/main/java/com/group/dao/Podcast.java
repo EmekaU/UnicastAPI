@@ -16,7 +16,8 @@ public class Podcast {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "podcasts_seq")
     private long podcast_id;
 
-    private Category category; // Not a table, just a data type.
+    @Column(name = "category")
+    private String category;
 
     @Max(250) @Column(name = "title")
     private String title;
@@ -32,18 +33,18 @@ public class Podcast {
     @JoinColumn(name = "creator_id", referencedColumnName="user_id")
     private UserDao creator;
 
-    @Column(name = "content", nullable = false)
-    private byte[] content;
+    @Column(name = "url", nullable = false)
+    private String url;
 
     @OneToMany(mappedBy = "podcast", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Comment> comments;
 
     public Podcast(){ }
 
-    public Podcast(Category category, String title, String description, byte[] content){
+    public Podcast(String category, String title, String description, String url){
         this.category = category;
         this.title = title;
-        this.content = content;
+        this.url = url;
         this.description = description;
         this.creationDate = new Date();
     }
@@ -56,11 +57,11 @@ public class Podcast {
         this.podcast_id = id;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
@@ -96,9 +97,9 @@ public class Podcast {
         this.creator = creator;
     }
 
-    public byte[] getContent() { return content; }
+    public String getUrl() { return url; }
 
-    public void setContent(byte[] content) { this.content = content; }
+    public void setContent(String url) { this.url = url; }
 
     public List<Comment> getComments() {
         return comments;
@@ -118,7 +119,7 @@ public class Podcast {
                 ", description='" + description + '\'' +
                 ", creationDate=" + creationDate +
                 ", creator=" + creator +
-                ", file=" + Arrays.toString(content) +
+                ", filepath=" + url +
                 '}';
     }
 }

@@ -13,7 +13,7 @@
     <groupId>com.group</groupId>
     <artifactId>unicast</artifactId>
     <packaging>war</packaging> <!-- Using war file instead of jar file-->
-    <version>unicast</version> <!-- Setting context path with version name-->
+    <version>api</version> <!-- Setting context path with version name-->
     <name>unicast</name>
     <description>CMPT 350 Project by Kareem and Valentine</description>
 

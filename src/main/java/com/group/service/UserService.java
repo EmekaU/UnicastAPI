@@ -101,7 +101,7 @@ public class UserService {
         return null;
     }
 
-    public boolean toggleSubscription(String token, Map<String, String> body){
+    public UserDao toggleSubscription(String token, Map<String, String> body){
 
         User user = JwtUtils.decodeUser(token);
         Subscriptions subscriptions = new Subscriptions();
@@ -114,15 +114,14 @@ public class UserService {
         if(this.subscriptionRepo.existsById(subscriptionsKey)){
 
             this.subscriptionRepo.deleteById(subscriptionsKey);
-            return true;
         }
         else{
 
             subscriptions.setId(subscriptionsKey);
             this.subscriptionRepo.save(subscriptions);
 
-            return true;
         }
+        return this.getUserByUsername(body.get("subscribetoid"), token);
     }
 
     public boolean deleteUser(String token){

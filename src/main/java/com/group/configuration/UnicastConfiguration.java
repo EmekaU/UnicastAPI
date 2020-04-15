@@ -1,24 +1,30 @@
 package com.group.configuration;
 
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.web.servlet.MultipartProperties;
 import org.springframework.context.annotation.*;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-
-import javax.servlet.MultipartConfigElement;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @ComponentScan(basePackages = "com.group")
 @PropertySource({"classpath:application.properties"})
 public class UnicastConfiguration {
 
-    private MultipartProperties multipartProperties;
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**");
+            }
+        };
+    }
 
-//    @Bean
-//    @ConditionalOnMissingBean({ MultipartConfigElement.class,
-//            CommonsMultipartResolver.class })
-//    public MultipartConfigElement multipartConfigElement() {
-//        return this.multipartProperties.createMultipartConfig();
-//    }
 }
