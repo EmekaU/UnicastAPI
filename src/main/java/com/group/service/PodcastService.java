@@ -9,6 +9,7 @@ import com.group.utilities.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -39,23 +40,17 @@ public class PodcastService {
     }
 
     public boolean createPodcast(String token, Map<String, String> body){
-        if(! JwtUtils.tokenIsExpired(token) && token != null) {
+//        MULTIPLE INSTANCES OF SAME PODCAST IS CURRENTLY ALLOWED. WILL CHANGE TO OVERWRITE LATER.
+        User user = JwtUtils.decodeUser(token);
+        String title = body.get("title");
+        String url = body.get("url");
+        String description = body.get("description");
 
-            User user = JwtUtils.decodeUser(token);
-            String title = body.get("title");
-            String url = body.get("url");
-            String description = body.get("description");
+        Podcast podcast = new Podcast(getCategory(body.get("category")).toString(), title, description, url);
+        podcast.setCreator(this.userRepo.getUserDaoByUsername(user.getUsername()));
 
-            Podcast podcast = new Podcast(getCategory(body.get("category")).toString(), title, description, url);
-            podcast.setCreator(this.userRepo.getUserDaoByUsername(user.getUsername()));
-
-            System.out.println(podcast.toString());
-
-            podcastRepo.save(podcast);
-            return true;
-        }
-
-        return false;
+        podcastRepo.save(podcast);
+        return true;
     }
 
     public List<Podcast> getPodcastsBelongingTo(String username){
@@ -69,7 +64,7 @@ public class PodcastService {
 
     public List<Podcast> getPodcastsByCategory(String category){
 
-        return this.podcastRepo.getPodcastByCategory(category);
+        return this.podcastRepo.getPodcastByCategory(this.getCategory(category).toString());
     }
 
     public List<Podcast> getPodcastsByTitle(String query){
@@ -77,4 +72,7 @@ public class PodcastService {
         return podcastRepo.getPodcastsByTitleIsContainingOrderByTitleAsc(query);
     }
 
+    public List<Podcast> getRecentPodcasts(){
+        return this.podcastRepo.getPodcastsByCreationDateBeforeOrderByCreationDateAsc(new Date());
+    }
 }

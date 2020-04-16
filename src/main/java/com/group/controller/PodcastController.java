@@ -34,7 +34,7 @@ public class PodcastController {
         }
         boolean success = podcastService.createPodcast(header.get(this.token_key), body);
 
-        HttpStatus status = body != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        HttpStatus status = success ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
 
         return new ResponseEntity<>(status);
     }
@@ -53,13 +53,36 @@ public class PodcastController {
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getPodcastById(@RequestHeader Map<String, String> header,
-                                         @PathVariable("id") String id){
+                                         @PathVariable("id") long id){
 
         if(!header.containsKey(this.token_key) || JwtUtils.tokenIsExpired(header.get(this.token_key))) {
 
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        return new ResponseEntity<>(this.podcastService, HttpStatus.OK);
+        return new ResponseEntity<>(this.podcastService.getPodcastById(id), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/get/category", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getPodcastByCategory(@RequestHeader Map<String, String> header,
+                                                  @RequestParam(name = "category") String category) {
+
+        if(!header.containsKey(this.token_key) || JwtUtils.tokenIsExpired(header.get(this.token_key))) {
+
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity<>(this.podcastService.getPodcastsByCategory(category), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/get/recent", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getPodcastByKey(@RequestHeader Map<String, String> header) {
+
+        if(!header.containsKey(this.token_key) || JwtUtils.tokenIsExpired(header.get(this.token_key))) {
+
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity<>(this.podcastService.getRecentPodcasts(), HttpStatus.OK);
     }
 }
