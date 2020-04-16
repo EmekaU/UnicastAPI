@@ -12,18 +12,14 @@ import java.util.List;
 @Repository
 public interface PodcastRepo extends CrudRepository<Podcast, Long> {
 
-//    public boolean deletePodcastByPodcast_id(long id);
-
-//    public Podcast getPodcastByPodcast_id(long id);
+    public Podcast getPodcastById(long id);
 
     public List<Podcast> getPodcastByCreator_Username(String username);
 
-    public List<Podcast> getPodcastByCategory(Category category);
+    public List<Podcast> getPodcastByCategory(String category);
 
     public List<Podcast> getPodcastsByTitleIsContainingOrderByTitleAsc(String match);
 
-    public List<Podcast> getPodcastsByCreationDateOrderByCreationDate(Date date);
-
-    public List<Podcast> getPodcastsByCreatorUsername(String username);
+    public List<Podcast> getPodcastsByCreationDateBeforeOrderByCreationDateAsc(Date date);
 
 }

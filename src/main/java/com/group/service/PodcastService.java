@@ -28,13 +28,13 @@ public class PodcastService {
     private Category getCategory(String categoryField){
 
         switch(categoryField.toLowerCase()){
-            case "comedy": return Category.Comedy;
-            case "sports": return Category.Sports;
-            case "politics": return Category.Politics;
-            case "education": return Category.Education;
-            case "religion": return Category.Religion;
-            case "lifestyle": return Category.Lifestyle;
-            default: return Category.Misc;
+            case "comedy": return Category.comedy;
+            case "sports": return Category.sports;
+            case "politics": return Category.politics;
+            case "education": return Category.education;
+            case "religion": return Category.religion;
+            case "lifestyle": return Category.lifestyle;
+            default: return Category.misc;
         }
     }
 
@@ -42,13 +42,11 @@ public class PodcastService {
         if(! JwtUtils.tokenIsExpired(token) && token != null) {
 
             User user = JwtUtils.decodeUser(token);
-            System.out.println(getCategory(body.get("category")));
-            Category category = getCategory(body.get("category"));
             String title = body.get("title");
             String url = body.get("url");
             String description = body.get("description");
 
-            Podcast podcast = new Podcast(body.get("category"), title, description, url);
+            Podcast podcast = new Podcast(getCategory(body.get("category")).toString(), title, description, url);
             podcast.setCreator(this.userRepo.getUserDaoByUsername(user.getUsername()));
 
             System.out.println(podcast.toString());
@@ -65,10 +63,14 @@ public class PodcastService {
         return this.podcastRepo.getPodcastByCreator_Username(username);
     }
 
-//    public List<Podcast> getPodcastsByCategory(String category){
-//
-//        return this.getPodcastsByCategory(category);
-//    }
+    public Podcast getPodcastById(long id){
+        return this.podcastRepo.getPodcastById(id);
+    }
+
+    public List<Podcast> getPodcastsByCategory(String category){
+
+        return this.podcastRepo.getPodcastByCategory(category);
+    }
 
     public List<Podcast> getPodcastsByTitle(String query){
 

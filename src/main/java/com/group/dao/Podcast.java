@@ -1,10 +1,9 @@
 package com.group.dao;
 
-import com.group.model.Category;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +13,8 @@ import java.util.List;
 public class Podcast {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "podcasts_seq")
-    private long podcast_id;
+    @Column(name = "podcast_id")
+    private long id;
 
     @Column(name = "category")
     private String category;
@@ -31,12 +31,14 @@ public class Podcast {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName="user_id")
+    @JsonBackReference
     private UserDao creator;
 
     @Column(name = "url", nullable = false)
     private String url;
 
     @OneToMany(mappedBy = "podcast", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Comment> comments;
 
     public Podcast(){ }
@@ -50,11 +52,11 @@ public class Podcast {
     }
 
     public Long getId() {
-        return podcast_id;
+        return id;
     }
 
     public void setId(Long id) {
-        this.podcast_id = id;
+        this.id = id;
     }
 
     public String getCategory() {
@@ -113,7 +115,7 @@ public class Podcast {
     @Override
     public String toString() {
         return "Podcast{" +
-                "id=" + podcast_id +
+                "id=" + id +
                 ", category=" + category +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +

@@ -1,5 +1,7 @@
 package com.group.dao;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,7 +17,8 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "podcast_id")
-    private Podcast podcast; // Column not allowed on a ManyToOne property.
+    @JsonBackReference
+    private Podcast podcast;
 
     public Comment(){}
 

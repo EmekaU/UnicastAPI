@@ -1,6 +1,7 @@
 package com.group.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -30,14 +31,17 @@ public class UserDao implements Serializable {
     private String password;
 
     @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Podcast> podcasts;
 
     private String photo;
 
     @OneToMany(mappedBy = "subscriberid", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<Subscriptions> subscriptions;
 
     @OneToMany(mappedBy = "subscribetoid", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<Subscriptions> subscribers;
 
     public UserDao(){ }
