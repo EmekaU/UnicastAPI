@@ -20,6 +20,6 @@ public interface PodcastRepo extends CrudRepository<Podcast, Long> {
 
     public List<Podcast> getPodcastsByTitleIsContainingOrderByTitleAsc(String match);
 
-    public List<Podcast> getPodcastsByCreationDateBeforeOrderByCreationDateAsc(Date date);
+    public List<Podcast> getPodcastsByCreationDateBeforeOrCreationDateEquals(Date creationDate, Date creationDate2);
 
 }

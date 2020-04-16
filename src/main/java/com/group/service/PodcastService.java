@@ -73,6 +73,6 @@ public class PodcastService {
     }
 
     public List<Podcast> getRecentPodcasts(){
-        return this.podcastRepo.getPodcastsByCreationDateBeforeOrderByCreationDateAsc(new Date());
+        return this.podcastRepo.getPodcastsByCreationDateBeforeOrCreationDateEquals(new Date(), new Date());
     }
 }
