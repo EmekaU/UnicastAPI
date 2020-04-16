@@ -6,6 +6,7 @@ import com.group.model.Category;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.validation.constraints.Max;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +14,8 @@ import java.util.List;
 public interface PodcastRepo extends CrudRepository<Podcast, Long> {
 
     public Podcast getPodcastById(long id);
+
+    public boolean existsByTitleAndCreatorId(String title, long creator_id);
 
     public List<Podcast> getPodcastByCreator_Username(String username);
 

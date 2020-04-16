@@ -16,7 +16,8 @@ import java.util.Set;
 @SequenceGenerator(name="users_seq", initialValue=1, allocationSize=1)
 public class UserDao implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
-    private long user_id;
+    @Column(name = "user_id")
+    private long id;
 
     @Column(nullable = false, unique = true) @Max(30)
     private String username;
@@ -51,9 +52,9 @@ public class UserDao implements Serializable {
         this.email = email;
         this.password = password;
     }
-    public long getUser_id() { return user_id; }
+    public long getId() { return id; }
 
-    public void setUser_id(long user_id) { this.user_id = user_id;}
+    public void setId(long id) { this.id = id;}
 
     public String getUsername() {return username;}
 
@@ -108,7 +109,7 @@ public class UserDao implements Serializable {
     @Override
     public String toString() {
         return "UserDao{" +
-                "user_id=" + user_id +
+                "user_id=" + id +
                 ", username='" + username + '\'' +
                 ", bio='" + bio + '\'' +
                 ", email='" + email + '\'' +

@@ -1,4 +1,6 @@
 package com.group.controller;
+import com.group.dao.Comment;
+import com.group.service.CommentService;
 import com.group.service.PodcastService;
 import com.group.utilities.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
@@ -15,11 +19,13 @@ public class PodcastController {
 
     private final String token_key = "token";
 
-    @Autowired
     private final PodcastService podcastService;
+    private final CommentService commentService;
 
-    public PodcastController(PodcastService podcastService){
+    @Autowired
+    public PodcastController(PodcastService podcastService, CommentService commentService){
         this.podcastService = podcastService;
+        this.commentService = commentService;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE )
@@ -31,6 +37,7 @@ public class PodcastController {
 
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+
         boolean success = podcastService.createPodcast(header.get(this.token_key), body);
 
         HttpStatus status = success ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
@@ -83,5 +90,36 @@ public class PodcastController {
         }
 
         return new ResponseEntity<>(this.podcastService.getRecentPodcasts(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/comment/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> addComment(@RequestHeader Map<String, String> header,
+                                        @RequestBody Map<String, String> body)  {
+
+        if(!header.containsKey(this.token_key) || JwtUtils.tokenIsExpired(header.get(this.token_key))) {
+
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        boolean success = this.commentService.addComment(body.get("message"), Long.parseLong(body.get("podcast_id")));
+
+        HttpStatus status = success ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+
+        return new ResponseEntity<>(status);
+    }
+
+    @RequestMapping(value = "get/comments/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getComments(@RequestHeader Map<String, String> header,
+                                        @PathVariable("id") String id) {
+
+        if (!header.containsKey(this.token_key) || JwtUtils.tokenIsExpired(header.get(this.token_key))) {
+
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        List<Comment> comments = this.podcastService.getCommentsBelongingToPodcastWithId(Long.getLong(id));
+
+        HttpStatus status = comments != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+        return new ResponseEntity<>(comments, status);
     }
 }

@@ -9,8 +9,8 @@ import com.group.repository.CommentRepo;
 @Service
 public class CommentService {
 
-    private PodcastRepo podcastRepo;
-    private CommentRepo commentRepo;
+    private final PodcastRepo podcastRepo;
+    private final CommentRepo commentRepo;
 
     @Autowired
     public CommentService(PodcastRepo podcastRepo, CommentRepo commentRepo){
@@ -18,23 +18,15 @@ public class CommentService {
         this.podcastRepo = podcastRepo;
         this.commentRepo = commentRepo;
     }
-//
-//    public void addComment(String message, long podcast_id){
-//
-//        Comment comment = new Comment(message);
-//        Podcast podcast = this.podcastRepo.getPodcastByPodcast_id(podcast_id);
-//        comment.setPodcast(podcast);
-//
-//        this.commentRepo.save(comment);
-//    }
-//
-//    public boolean deleteComment(Long commentid){
-//        Comment comment = this.commentRepo.getCommentByComment_id(commentid);
-//        if(comment != null){
-//            this.commentRepo.delete(comment);
-//            return true;
-//        }
-//        return false;
-//    }
+
+    public boolean addComment(String message, long podcast_id){
+
+        Comment comment = new Comment(message);
+        Podcast podcast = this.podcastRepo.getPodcastById(podcast_id);
+        comment.setPodcast(podcast);
+
+        this.commentRepo.save(comment);
+        return true;
+    }
 
 }

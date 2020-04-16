@@ -1,5 +1,6 @@
 package com.group.service;
 
+import com.group.dao.Comment;
 import com.group.dao.Podcast;
 import com.group.model.Category;
 import com.group.model.User;
@@ -16,8 +17,8 @@ import java.util.Map;
 @Service
 public class PodcastService {
 
-    private PodcastRepo podcastRepo;
-    private UserRepo userRepo;
+    private final PodcastRepo podcastRepo;
+    private final UserRepo userRepo;
 
     @Autowired
     public PodcastService(PodcastRepo podcastRepo, UserRepo userRepo) {
@@ -40,14 +41,18 @@ public class PodcastService {
     }
 
     public boolean createPodcast(String token, Map<String, String> body){
-//        MULTIPLE INSTANCES OF SAME PODCAST IS CURRENTLY ALLOWED. WILL CHANGE TO OVERWRITE LATER.
-        User user = JwtUtils.decodeUser(token);
+        User user = JwtUtils.decodeUser(token); // Check that token is not compromised
         String title = body.get("title");
         String url = body.get("url");
         String description = body.get("description");
 
         Podcast podcast = new Podcast(getCategory(body.get("category")).toString(), title, description, url);
         podcast.setCreator(this.userRepo.getUserDaoByUsername(user.getUsername()));
+
+//        If user has used the same title, return error message. To avoid SQL Check Constraint Error
+        if(this.podcastRepo.existsByTitleAndCreatorId(podcast.getTitle(), podcast.getCreator().getId())){
+            return false;
+        }
 
         podcastRepo.save(podcast);
         return true;
@@ -59,7 +64,10 @@ public class PodcastService {
     }
 
     public Podcast getPodcastById(long id){
-        return this.podcastRepo.getPodcastById(id);
+        if(podcastRepo.existsById(id)){
+            return this.podcastRepo.getPodcastById(id);
+        }
+        return null;
     }
 
     public List<Podcast> getPodcastsByCategory(String category){
@@ -74,5 +82,14 @@ public class PodcastService {
 
     public List<Podcast> getRecentPodcasts(){
         return this.podcastRepo.getPodcastsByCreationDateBeforeOrCreationDateEquals(new Date(), new Date());
+    }
+
+    public List<Comment> getCommentsBelongingToPodcastWithId(long id){
+        Podcast podcast = this.getPodcastById(id);
+        if(podcast != null){
+
+            return podcast.getComments();
+        }
+        return null;
     }
 }
