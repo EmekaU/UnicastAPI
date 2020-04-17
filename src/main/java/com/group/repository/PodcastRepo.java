@@ -17,7 +17,7 @@ public interface PodcastRepo extends CrudRepository<Podcast, Long> {
 
     public boolean existsByTitleAndCreatorId(String title, long creator_id);
 
-    public List<Podcast> getPodcastByCreator_Username(String username);
+    public List<Podcast> getPodcastsByCreator_Username(String username);
 
     public List<Podcast> getPodcastByCategory(String category);
 
@@ -25,4 +25,5 @@ public interface PodcastRepo extends CrudRepository<Podcast, Long> {
 
     public List<Podcast> getPodcastsByCreationDateBeforeOrCreationDateEquals(Date creationDate, Date creationDate2);
 
+    public boolean existsByCreator_Username(String username);
 }

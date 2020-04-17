@@ -19,10 +19,10 @@ public class Podcast {
     @Column(name = "category")
     private String category;
 
-    @Max(250) @Column(name = "title")
+    @Max(50) @Column(name = "title")
     private String title;
 
-    @Max(250) @Column(name = "description")
+    @Max(140) @Column(name = "description")
     private String description;
 
     @Temporal(TemporalType.DATE)

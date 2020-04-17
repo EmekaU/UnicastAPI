@@ -59,8 +59,11 @@ public class PodcastService {
     }
 
     public List<Podcast> getPodcastsBelongingTo(String username){
+        if(this.podcastRepo.existsByCreator_Username(username)){
+            return this.podcastRepo.getPodcastsByCreator_Username(username);
+        }
 
-        return this.podcastRepo.getPodcastByCreator_Username(username);
+        return null;
     }
 
     public Podcast getPodcastById(long id){

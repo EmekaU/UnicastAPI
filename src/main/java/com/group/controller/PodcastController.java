@@ -1,5 +1,6 @@
 package com.group.controller;
 import com.group.dao.Comment;
+import com.group.dao.Podcast;
 import com.group.service.CommentService;
 import com.group.service.PodcastService;
 import com.group.utilities.JwtUtils;
@@ -45,19 +46,24 @@ public class PodcastController {
         return new ResponseEntity<>(status);
     }
 
-    @RequestMapping(value = "/get/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/getByUsername/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUserPodcasts(@RequestHeader Map<String, String> header,
-                                         @PathVariable("username") String username){
+                                         @PathVariable(name = "username") String username){
 
+        System.out.println("Username: "+ username);
         if(!header.containsKey(this.token_key) || JwtUtils.tokenIsExpired(header.get(this.token_key))) {
 
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        return new ResponseEntity<>(this.podcastService.getPodcastsBelongingTo(username), HttpStatus.OK);
+        System.out.print(username);
+        List<Podcast> podcasts = this.podcastService.getPodcastsBelongingTo(username);
+        HttpStatus status = podcasts != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+
+        return new ResponseEntity<>(podcasts, status);
     }
 
-    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/getById/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getPodcastById(@RequestHeader Map<String, String> header,
                                          @PathVariable("id") long id){
 
@@ -82,7 +88,7 @@ public class PodcastController {
     }
 
     @RequestMapping(value = "/get/recent", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getPodcastByKey(@RequestHeader Map<String, String> header) {
+    public ResponseEntity<?> getRecentPodcasts(@RequestHeader Map<String, String> header) {
 
         if(!header.containsKey(this.token_key) || JwtUtils.tokenIsExpired(header.get(this.token_key))) {
 
@@ -95,17 +101,19 @@ public class PodcastController {
     @RequestMapping(value = "/comment/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addComment(@RequestHeader Map<String, String> header,
                                         @RequestBody Map<String, String> body)  {
-
+        long id = Long.parseLong(body.get("podcast_id"));
+        String message = body.get("message");
         if(!header.containsKey(this.token_key) || JwtUtils.tokenIsExpired(header.get(this.token_key))) {
 
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        boolean success = this.commentService.addComment(body.get("message"), Long.parseLong(body.get("podcast_id")));
+        boolean success = this.commentService.addComment(message, id);
 
         HttpStatus status = success ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        List<Comment> comments = this.podcastService.getCommentsBelongingToPodcastWithId(id);
 
-        return new ResponseEntity<>(status);
+        return new ResponseEntity<>(comments, status);
     }
 
     @RequestMapping(value = "get/comments/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

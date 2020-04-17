@@ -19,11 +19,11 @@ import java.util.Map;
 @Service
 public class UserService {
 
-    private UserRepo userRepo;
-    private SubscriptionRepo subscriptionRepo;
+    private final UserRepo userRepo;
+    private final SubscriptionRepo subscriptionRepo;
     private EntityManager em;
 
-    private static Logger log = LogManager.getLogger(UserService.class.getName());
+    private static final Logger log = LogManager.getLogger(UserService.class.getName());
 
     @Autowired
     public UserService(UserRepo userRepo, SubscriptionRepo subscriptionRepo){
