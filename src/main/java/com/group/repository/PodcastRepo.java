@@ -26,4 +26,6 @@ public interface PodcastRepo extends CrudRepository<Podcast, Long> {
     public List<Podcast> getPodcastsByCreationDateBeforeOrCreationDateEquals(Date creationDate, Date creationDate2);
 
     public boolean existsByCreator_Username(String username);
+
+    public List<Podcast> getAllByCreatorNotNull();
 }

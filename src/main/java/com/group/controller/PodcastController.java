@@ -39,18 +39,17 @@ public class PodcastController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        boolean success = podcastService.createPodcast(header.get(this.token_key), body);
+        List<Podcast> podcasts = podcastService.createPodcast(header.get(this.token_key), body);
 
-        HttpStatus status = success ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        HttpStatus status = podcasts != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
 
-        return new ResponseEntity<>(status);
+        return new ResponseEntity<>(podcasts, status);
     }
 
     @RequestMapping(value = "/getByUsername/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUserPodcasts(@RequestHeader Map<String, String> header,
                                          @PathVariable(name = "username") String username){
 
-        System.out.println("Username: "+ username);
         if(!header.containsKey(this.token_key) || JwtUtils.tokenIsExpired(header.get(this.token_key))) {
 
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -85,6 +84,17 @@ public class PodcastController {
         }
 
         return new ResponseEntity<>(this.podcastService.getPodcastsByCategory(category), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/get/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getAll(@RequestHeader Map<String, String> header) {
+
+        if(!header.containsKey(this.token_key) || JwtUtils.tokenIsExpired(header.get(this.token_key))) {
+
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity<>(this.podcastService.getAll(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/get/recent", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

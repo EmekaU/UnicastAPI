@@ -40,7 +40,7 @@ public class PodcastService {
         }
     }
 
-    public boolean createPodcast(String token, Map<String, String> body){
+    public List<Podcast> createPodcast(String token, Map<String, String> body){
         User user = JwtUtils.decodeUser(token); // Check that token is not compromised
         String title = body.get("title");
         String url = body.get("url");
@@ -51,11 +51,11 @@ public class PodcastService {
 
 //        If user has used the same title, return error message. To avoid SQL Check Constraint Error
         if(this.podcastRepo.existsByTitleAndCreatorId(podcast.getTitle(), podcast.getCreator().getId())){
-            return false;
+            return null;
         }
 
         podcastRepo.save(podcast);
-        return true;
+        return this.getPodcastsBelongingTo(user.getUsername());
     }
 
     public List<Podcast> getPodcastsBelongingTo(String username){
@@ -85,6 +85,10 @@ public class PodcastService {
 
     public List<Podcast> getRecentPodcasts(){
         return this.podcastRepo.getPodcastsByCreationDateBeforeOrCreationDateEquals(new Date(), new Date());
+    }
+
+    public List<Podcast> getAll(){
+        return this.podcastRepo.getAllByCreatorNotNull();
     }
 
     public List<Comment> getCommentsBelongingToPodcastWithId(long id){
